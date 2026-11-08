@@ -1,0 +1,4753 @@
+{
+  "title": "GridWorld Committed Benchmark: Baseline Blackout vs Simulation-Guided Relief",
+  "scenario_id": "dev_chronic_0003_overload",
+  "scientific_finding": "On authentic Grid2Op chronic 0003, Line 17 initializes in severe thermal overload (rho=1.028). Under Do-Nothing, thermal protection trips after 2 steps and triggers complete network collapse at Step 3. The simulation-guided controllers simulate candidate actions around the overloaded corridor, discover that switching Line 7 relieves Line 17 below emergency thermal rating (rho=0.991), and survive all 10 steps.",
+  "controllers": [
+    {
+      "record": {
+        "id": "exp_dev_chronic_0003_overload_noop_5e59c6",
+        "scenario_id": "dev_chronic_0003_overload",
+        "controller_type": "noop",
+        "timestamp": "2026-11-08T19:47:05.737421+00:00",
+        "provenance": {
+          "timestamp_utc": "2026-11-08T19:47:05.718644+00:00",
+          "python_version": "3.12.7",
+          "grid2op_version": "1.12.6",
+          "backend_class": "LightSimBackend_l2rpn_case14_sandboxLightSimBackend",
+          "platform": "macOS-15.5-arm64-arm-64bit",
+          "env_name": "l2rpn_case14_sandbox",
+          "chronic_subpath": "/Users/bradleyharaguchi/data_grid2op/l2rpn_case14_sandbox/chronics/0003",
+          "chronic_id": 3,
+          "start_step": 0,
+          "seed": 42,
+          "max_steps": 10,
+          "disturbances": []
+        },
+        "metrics": {
+          "survival_steps": 3,
+          "max_steps": 10,
+          "survived": false,
+          "hard_failure": true,
+          "peak_line_utilization": 1.0282,
+          "mean_line_utilization": 0.3674,
+          "overload_violations": 3,
+          "overload_severity": 0.0737,
+          "actions_taken": 0,
+          "invalid_actions": 0,
+          "forecast_mean_absolute_error": 0.0,
+          "execution_time_ms": 2.88,
+          "resource_usage": {
+            "simulation_calls": 0,
+            "model_calls": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "model_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0
+          },
+          "fallback_used": false
+        },
+        "actions_summary": []
+      },
+      "replay": {
+        "experiment_id": "exp_dev_chronic_0003_overload_noop_5e59c6",
+        "scenario_id": "dev_chronic_0003_overload",
+        "controller_type": "noop",
+        "provenance": {
+          "timestamp_utc": "2026-11-08T19:47:05.718644+00:00",
+          "python_version": "3.12.7",
+          "grid2op_version": "1.12.6",
+          "backend_class": "LightSimBackend_l2rpn_case14_sandboxLightSimBackend",
+          "platform": "macOS-15.5-arm64-arm-64bit",
+          "env_name": "l2rpn_case14_sandbox",
+          "chronic_subpath": "/Users/bradleyharaguchi/data_grid2op/l2rpn_case14_sandbox/chronics/0003",
+          "chronic_id": 3,
+          "start_step": 0,
+          "seed": 42,
+          "max_steps": 10,
+          "disturbances": []
+        },
+        "topology": {
+          "name": "l2rpn_case14_sandbox",
+          "n_sub": 14,
+          "n_line": 20,
+          "n_gen": 6,
+          "n_load": 11,
+          "substations": [
+            {
+              "id": 0,
+              "name": "sub_0",
+              "pos_x": 100.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                0,
+                1
+              ],
+              "generators": [
+                5
+              ],
+              "loads": []
+            },
+            {
+              "id": 1,
+              "name": "sub_1",
+              "pos_x": 260.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                0,
+                2,
+                3,
+                4
+              ],
+              "generators": [
+                0
+              ],
+              "loads": [
+                0
+              ]
+            },
+            {
+              "id": 2,
+              "name": "sub_2",
+              "pos_x": 120.0,
+              "pos_y": 260.0,
+              "connected_lines": [
+                2,
+                5
+              ],
+              "generators": [
+                1
+              ],
+              "loads": [
+                1
+              ]
+            },
+            {
+              "id": 3,
+              "name": "sub_3",
+              "pos_x": 300.0,
+              "pos_y": 260.0,
+              "connected_lines": [
+                3,
+                5,
+                6,
+                15,
+                16
+              ],
+              "generators": [],
+              "loads": [
+                2
+              ]
+            },
+            {
+              "id": 4,
+              "name": "sub_4",
+              "pos_x": 210.0,
+              "pos_y": 330.0,
+              "connected_lines": [
+                1,
+                4,
+                6,
+                17
+              ],
+              "generators": [],
+              "loads": [
+                3
+              ]
+            },
+            {
+              "id": 5,
+              "name": "sub_5",
+              "pos_x": 480.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                7,
+                8,
+                9,
+                17
+              ],
+              "generators": [
+                2,
+                3
+              ],
+              "loads": [
+                4
+              ]
+            },
+            {
+              "id": 6,
+              "name": "sub_6",
+              "pos_x": 440.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                15,
+                18,
+                19
+              ],
+              "generators": [],
+              "loads": []
+            },
+            {
+              "id": 7,
+              "name": "sub_7",
+              "pos_x": 520.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                18
+              ],
+              "generators": [
+                4
+              ],
+              "loads": []
+            },
+            {
+              "id": 8,
+              "name": "sub_8",
+              "pos_x": 380.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                10,
+                11,
+                16,
+                19
+              ],
+              "generators": [],
+              "loads": [
+                5
+              ]
+            },
+            {
+              "id": 9,
+              "name": "sub_9",
+              "pos_x": 490.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                10,
+                12
+              ],
+              "generators": [],
+              "loads": [
+                6
+              ]
+            },
+            {
+              "id": 10,
+              "name": "sub_10",
+              "pos_x": 460.0,
+              "pos_y": 90.0,
+              "connected_lines": [
+                7,
+                12
+              ],
+              "generators": [],
+              "loads": [
+                7
+              ]
+            },
+            {
+              "id": 11,
+              "name": "sub_11",
+              "pos_x": 600.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                8,
+                13
+              ],
+              "generators": [],
+              "loads": [
+                8
+              ]
+            },
+            {
+              "id": 12,
+              "name": "sub_12",
+              "pos_x": 600.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                9,
+                13,
+                14
+              ],
+              "generators": [],
+              "loads": [
+                9
+              ]
+            },
+            {
+              "id": 13,
+              "name": "sub_13",
+              "pos_x": 560.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                11,
+                14
+              ],
+              "generators": [],
+              "loads": [
+                10
+              ]
+            }
+          ],
+          "lines": [
+            {
+              "id": 0,
+              "name": "0_1_0",
+              "from_sub": 0,
+              "to_sub": 1,
+              "thermal_limit": 541.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 1,
+              "name": "0_4_1",
+              "from_sub": 0,
+              "to_sub": 4,
+              "thermal_limit": 450.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 2,
+              "name": "1_2_2",
+              "from_sub": 1,
+              "to_sub": 2,
+              "thermal_limit": 375.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 3,
+              "name": "1_3_3",
+              "from_sub": 1,
+              "to_sub": 3,
+              "thermal_limit": 636.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 4,
+              "name": "1_4_4",
+              "from_sub": 1,
+              "to_sub": 4,
+              "thermal_limit": 175.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 5,
+              "name": "2_3_5",
+              "from_sub": 2,
+              "to_sub": 3,
+              "thermal_limit": 285.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 6,
+              "name": "3_4_6",
+              "from_sub": 3,
+              "to_sub": 4,
+              "thermal_limit": 335.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 7,
+              "name": "5_10_7",
+              "from_sub": 5,
+              "to_sub": 10,
+              "thermal_limit": 657.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 8,
+              "name": "5_11_8",
+              "from_sub": 5,
+              "to_sub": 11,
+              "thermal_limit": 496.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 9,
+              "name": "5_12_9",
+              "from_sub": 5,
+              "to_sub": 12,
+              "thermal_limit": 827.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 10,
+              "name": "8_9_10",
+              "from_sub": 8,
+              "to_sub": 9,
+              "thermal_limit": 442.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 11,
+              "name": "8_13_11",
+              "from_sub": 8,
+              "to_sub": 13,
+              "thermal_limit": 641.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 12,
+              "name": "9_10_12",
+              "from_sub": 9,
+              "to_sub": 10,
+              "thermal_limit": 840.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 13,
+              "name": "11_12_13",
+              "from_sub": 11,
+              "to_sub": 12,
+              "thermal_limit": 156.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 14,
+              "name": "12_13_14",
+              "from_sub": 12,
+              "to_sub": 13,
+              "thermal_limit": 664.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 15,
+              "name": "3_6_15",
+              "from_sub": 3,
+              "to_sub": 6,
+              "thermal_limit": 235.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 16,
+              "name": "3_8_16",
+              "from_sub": 3,
+              "to_sub": 8,
+              "thermal_limit": 119.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 17,
+              "name": "4_5_17",
+              "from_sub": 4,
+              "to_sub": 5,
+              "thermal_limit": 179.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 18,
+              "name": "6_7_18",
+              "from_sub": 6,
+              "to_sub": 7,
+              "thermal_limit": 1986.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 19,
+              "name": "6_8_19",
+              "from_sub": 8,
+              "to_sub": 6,
+              "thermal_limit": 1572.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            }
+          ],
+          "generators": [
+            {
+              "id": 0,
+              "name": "gen_1_0",
+              "sub_id": 1,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 140.0
+            },
+            {
+              "id": 1,
+              "name": "gen_2_1",
+              "sub_id": 2,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 120.0
+            },
+            {
+              "id": 2,
+              "name": "gen_5_2",
+              "sub_id": 5,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 70.0
+            },
+            {
+              "id": 3,
+              "name": "gen_5_3",
+              "sub_id": 5,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 70.0
+            },
+            {
+              "id": 4,
+              "name": "gen_7_4",
+              "sub_id": 7,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 40.0
+            },
+            {
+              "id": 5,
+              "name": "gen_0_5",
+              "sub_id": 0,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 100.0
+            }
+          ],
+          "loads": [
+            {
+              "id": 0,
+              "name": "load_1_0",
+              "sub_id": 1,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 1,
+              "name": "load_2_1",
+              "sub_id": 2,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 2,
+              "name": "load_3_2",
+              "sub_id": 3,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 3,
+              "name": "load_4_3",
+              "sub_id": 4,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 4,
+              "name": "load_5_4",
+              "sub_id": 5,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 5,
+              "name": "load_8_5",
+              "sub_id": 8,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 6,
+              "name": "load_9_6",
+              "sub_id": 9,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 7,
+              "name": "load_10_7",
+              "sub_id": 10,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 8,
+              "name": "load_11_8",
+              "sub_id": 11,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 9,
+              "name": "load_12_9",
+              "sub_id": 12,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 10,
+              "name": "load_13_10",
+              "sub_id": 13,
+              "p": 0.0,
+              "q": 0.0
+            }
+          ],
+          "busbar_modeling_note": "Topology is rendered at substation level; dynamic dual-busbar reconfigurations within substations are evaluated numerically by Grid2Op."
+        },
+        "metrics": {
+          "survival_steps": 3,
+          "max_steps": 10,
+          "survived": false,
+          "hard_failure": true,
+          "peak_line_utilization": 1.0282,
+          "mean_line_utilization": 0.3674,
+          "overload_violations": 3,
+          "overload_severity": 0.0737,
+          "actions_taken": 0,
+          "invalid_actions": 0,
+          "forecast_mean_absolute_error": 0.0,
+          "execution_time_ms": 2.88,
+          "resource_usage": {
+            "simulation_calls": 0,
+            "model_calls": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "model_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0
+          },
+          "fallback_used": false
+        },
+        "steps": [
+          {
+            "step": 0,
+            "max_rho": 1.0282082557678223,
+            "mean_rho": 0.4903140962123871,
+            "line_rhos": [
+              0.3411959111690521,
+              0.3800181746482849,
+              0.2741563022136688,
+              0.28502723574638367,
+              0.892549455165863,
+              0.3082045316696167,
+              0.34710177779197693,
+              0.5555635690689087,
+              0.5163096785545349,
+              0.7686439752578735,
+              0.35431259870529175,
+              0.4282170832157135,
+              0.30713117122650146,
+              0.47122740745544434,
+              0.42094674706459045,
+              0.5780906677246094,
+              0.5725074410438538,
+              1.0282082557678223,
+              0.4782695770263672,
+              0.49860090017318726
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 257.9000244140625,
+            "total_gen_mw": 262.6689758300781,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Initial state at chronic start"
+            },
+            "proposals_history": [],
+            "forecast_verification": null,
+            "reward": 0.0,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 1,
+            "max_rho": 1.0245516300201416,
+            "mean_rho": 0.49015188217163086,
+            "line_rhos": [
+              0.35035401582717896,
+              0.38241448998451233,
+              0.28405722975730896,
+              0.28517547249794006,
+              0.8907151818275452,
+              0.29757872223854065,
+              0.3520086705684662,
+              0.5573784112930298,
+              0.5188613533973694,
+              0.7713650465011597,
+              0.34452715516090393,
+              0.4244993329048157,
+              0.31026414036750793,
+              0.4688085913658142,
+              0.4211183488368988,
+              0.574435830116272,
+              0.5686988234519958,
+              1.0245516300201416,
+              0.4795164167881012,
+              0.49670907855033875
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 255.8000030517578,
+            "total_gen_mw": 260.6045227050781,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Passively monitor grid state without intervention (Do-Nothing baseline)."
+            },
+            "proposals_history": [],
+            "forecast_verification": null,
+            "reward": 62.07769012451172,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 2,
+            "max_rho": 1.0209097862243652,
+            "mean_rho": 0.4891188144683838,
+            "line_rhos": [
+              0.36695626378059387,
+              0.38717085123062134,
+              0.2875232696533203,
+              0.28544798493385315,
+              0.8889612555503845,
+              0.2939183712005615,
+              0.3575299084186554,
+              0.5512169599533081,
+              0.51675945520401,
+              0.7666734457015991,
+              0.3444361686706543,
+              0.4243941903114319,
+              0.3053947389125824,
+              0.4621315598487854,
+              0.4165542721748352,
+              0.5728867053985596,
+              0.5661171674728394,
+              1.0209097862243652,
+              0.4749741554260254,
+              0.49241912364959717
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 257.20001220703125,
+            "total_gen_mw": 262.0536804199219,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Passively monitor grid state without intervention (Do-Nothing baseline)."
+            },
+            "proposals_history": [],
+            "forecast_verification": null,
+            "reward": 61.738670349121094,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 3,
+            "max_rho": 0.0,
+            "mean_rho": 0.0,
+            "line_rhos": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "line_status": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "total_load_mw": 0.0,
+            "total_gen_mw": 0.0,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Passively monitor grid state without intervention (Do-Nothing baseline)."
+            },
+            "proposals_history": [],
+            "forecast_verification": null,
+            "reward": -10.0,
+            "done": true,
+            "done_reason": "Grid collapsed: Grid2OpException BackendError \"Divergence of DC powerflow (non connected grid) at the initialization of AC powerflow. Detailed error: ErrorType.SolverFactor\"",
+            "fallback_used": false
+          }
+        ]
+      }
+    },
+    {
+      "record": {
+        "id": "exp_dev_chronic_0003_overload_simulation_planner_c12587",
+        "scenario_id": "dev_chronic_0003_overload",
+        "controller_type": "simulation_planner",
+        "timestamp": "2026-11-08T19:47:05.993513+00:00",
+        "provenance": {
+          "timestamp_utc": "2026-11-08T19:47:05.993366+00:00",
+          "python_version": "3.12.7",
+          "grid2op_version": "1.12.6",
+          "backend_class": "LightSimBackend_l2rpn_case14_sandboxLightSimBackend",
+          "platform": "macOS-15.5-arm64-arm-64bit",
+          "env_name": "l2rpn_case14_sandbox",
+          "chronic_subpath": "/Users/bradleyharaguchi/data_grid2op/l2rpn_case14_sandbox/chronics/0003",
+          "chronic_id": 3,
+          "start_step": 0,
+          "seed": 42,
+          "max_steps": 10,
+          "disturbances": []
+        },
+        "metrics": {
+          "survival_steps": 10,
+          "max_steps": 10,
+          "survived": true,
+          "hard_failure": false,
+          "peak_line_utilization": 1.0282,
+          "mean_line_utilization": 0.4939,
+          "overload_violations": 1,
+          "overload_severity": 0.0282,
+          "actions_taken": 1,
+          "invalid_actions": 0,
+          "forecast_mean_absolute_error": 0.0058,
+          "execution_time_ms": 164.09,
+          "resource_usage": {
+            "simulation_calls": 60,
+            "model_calls": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "model_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0
+          },
+          "fallback_used": false
+        },
+        "actions_summary": [
+          "Step 1 (simulation_planner): Selected A4 after evaluating 6 candidates; projected peak rho: 0.997 (baseline: 1.028)."
+        ]
+      },
+      "replay": {
+        "experiment_id": "exp_dev_chronic_0003_overload_simulation_planner_c12587",
+        "scenario_id": "dev_chronic_0003_overload",
+        "controller_type": "simulation_planner",
+        "provenance": {
+          "timestamp_utc": "2026-11-08T19:47:05.993366+00:00",
+          "python_version": "3.12.7",
+          "grid2op_version": "1.12.6",
+          "backend_class": "LightSimBackend_l2rpn_case14_sandboxLightSimBackend",
+          "platform": "macOS-15.5-arm64-arm-64bit",
+          "env_name": "l2rpn_case14_sandbox",
+          "chronic_subpath": "/Users/bradleyharaguchi/data_grid2op/l2rpn_case14_sandbox/chronics/0003",
+          "chronic_id": 3,
+          "start_step": 0,
+          "seed": 42,
+          "max_steps": 10,
+          "disturbances": []
+        },
+        "topology": {
+          "name": "l2rpn_case14_sandbox",
+          "n_sub": 14,
+          "n_line": 20,
+          "n_gen": 6,
+          "n_load": 11,
+          "substations": [
+            {
+              "id": 0,
+              "name": "sub_0",
+              "pos_x": 100.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                0,
+                1
+              ],
+              "generators": [
+                5
+              ],
+              "loads": []
+            },
+            {
+              "id": 1,
+              "name": "sub_1",
+              "pos_x": 260.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                0,
+                2,
+                3,
+                4
+              ],
+              "generators": [
+                0
+              ],
+              "loads": [
+                0
+              ]
+            },
+            {
+              "id": 2,
+              "name": "sub_2",
+              "pos_x": 120.0,
+              "pos_y": 260.0,
+              "connected_lines": [
+                2,
+                5
+              ],
+              "generators": [
+                1
+              ],
+              "loads": [
+                1
+              ]
+            },
+            {
+              "id": 3,
+              "name": "sub_3",
+              "pos_x": 300.0,
+              "pos_y": 260.0,
+              "connected_lines": [
+                3,
+                5,
+                6,
+                15,
+                16
+              ],
+              "generators": [],
+              "loads": [
+                2
+              ]
+            },
+            {
+              "id": 4,
+              "name": "sub_4",
+              "pos_x": 210.0,
+              "pos_y": 330.0,
+              "connected_lines": [
+                1,
+                4,
+                6,
+                17
+              ],
+              "generators": [],
+              "loads": [
+                3
+              ]
+            },
+            {
+              "id": 5,
+              "name": "sub_5",
+              "pos_x": 480.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                7,
+                8,
+                9,
+                17
+              ],
+              "generators": [
+                2,
+                3
+              ],
+              "loads": [
+                4
+              ]
+            },
+            {
+              "id": 6,
+              "name": "sub_6",
+              "pos_x": 440.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                15,
+                18,
+                19
+              ],
+              "generators": [],
+              "loads": []
+            },
+            {
+              "id": 7,
+              "name": "sub_7",
+              "pos_x": 520.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                18
+              ],
+              "generators": [
+                4
+              ],
+              "loads": []
+            },
+            {
+              "id": 8,
+              "name": "sub_8",
+              "pos_x": 380.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                10,
+                11,
+                16,
+                19
+              ],
+              "generators": [],
+              "loads": [
+                5
+              ]
+            },
+            {
+              "id": 9,
+              "name": "sub_9",
+              "pos_x": 490.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                10,
+                12
+              ],
+              "generators": [],
+              "loads": [
+                6
+              ]
+            },
+            {
+              "id": 10,
+              "name": "sub_10",
+              "pos_x": 460.0,
+              "pos_y": 90.0,
+              "connected_lines": [
+                7,
+                12
+              ],
+              "generators": [],
+              "loads": [
+                7
+              ]
+            },
+            {
+              "id": 11,
+              "name": "sub_11",
+              "pos_x": 600.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                8,
+                13
+              ],
+              "generators": [],
+              "loads": [
+                8
+              ]
+            },
+            {
+              "id": 12,
+              "name": "sub_12",
+              "pos_x": 600.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                9,
+                13,
+                14
+              ],
+              "generators": [],
+              "loads": [
+                9
+              ]
+            },
+            {
+              "id": 13,
+              "name": "sub_13",
+              "pos_x": 560.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                11,
+                14
+              ],
+              "generators": [],
+              "loads": [
+                10
+              ]
+            }
+          ],
+          "lines": [
+            {
+              "id": 0,
+              "name": "0_1_0",
+              "from_sub": 0,
+              "to_sub": 1,
+              "thermal_limit": 541.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 1,
+              "name": "0_4_1",
+              "from_sub": 0,
+              "to_sub": 4,
+              "thermal_limit": 450.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 2,
+              "name": "1_2_2",
+              "from_sub": 1,
+              "to_sub": 2,
+              "thermal_limit": 375.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 3,
+              "name": "1_3_3",
+              "from_sub": 1,
+              "to_sub": 3,
+              "thermal_limit": 636.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 4,
+              "name": "1_4_4",
+              "from_sub": 1,
+              "to_sub": 4,
+              "thermal_limit": 175.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 5,
+              "name": "2_3_5",
+              "from_sub": 2,
+              "to_sub": 3,
+              "thermal_limit": 285.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 6,
+              "name": "3_4_6",
+              "from_sub": 3,
+              "to_sub": 4,
+              "thermal_limit": 335.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 7,
+              "name": "5_10_7",
+              "from_sub": 5,
+              "to_sub": 10,
+              "thermal_limit": 657.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 8,
+              "name": "5_11_8",
+              "from_sub": 5,
+              "to_sub": 11,
+              "thermal_limit": 496.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 9,
+              "name": "5_12_9",
+              "from_sub": 5,
+              "to_sub": 12,
+              "thermal_limit": 827.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 10,
+              "name": "8_9_10",
+              "from_sub": 8,
+              "to_sub": 9,
+              "thermal_limit": 442.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 11,
+              "name": "8_13_11",
+              "from_sub": 8,
+              "to_sub": 13,
+              "thermal_limit": 641.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 12,
+              "name": "9_10_12",
+              "from_sub": 9,
+              "to_sub": 10,
+              "thermal_limit": 840.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 13,
+              "name": "11_12_13",
+              "from_sub": 11,
+              "to_sub": 12,
+              "thermal_limit": 156.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 14,
+              "name": "12_13_14",
+              "from_sub": 12,
+              "to_sub": 13,
+              "thermal_limit": 664.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 15,
+              "name": "3_6_15",
+              "from_sub": 3,
+              "to_sub": 6,
+              "thermal_limit": 235.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 16,
+              "name": "3_8_16",
+              "from_sub": 3,
+              "to_sub": 8,
+              "thermal_limit": 119.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 17,
+              "name": "4_5_17",
+              "from_sub": 4,
+              "to_sub": 5,
+              "thermal_limit": 179.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 18,
+              "name": "6_7_18",
+              "from_sub": 6,
+              "to_sub": 7,
+              "thermal_limit": 1986.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 19,
+              "name": "6_8_19",
+              "from_sub": 8,
+              "to_sub": 6,
+              "thermal_limit": 1572.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            }
+          ],
+          "generators": [
+            {
+              "id": 0,
+              "name": "gen_1_0",
+              "sub_id": 1,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 140.0
+            },
+            {
+              "id": 1,
+              "name": "gen_2_1",
+              "sub_id": 2,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 120.0
+            },
+            {
+              "id": 2,
+              "name": "gen_5_2",
+              "sub_id": 5,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 70.0
+            },
+            {
+              "id": 3,
+              "name": "gen_5_3",
+              "sub_id": 5,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 70.0
+            },
+            {
+              "id": 4,
+              "name": "gen_7_4",
+              "sub_id": 7,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 40.0
+            },
+            {
+              "id": 5,
+              "name": "gen_0_5",
+              "sub_id": 0,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 100.0
+            }
+          ],
+          "loads": [
+            {
+              "id": 0,
+              "name": "load_1_0",
+              "sub_id": 1,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 1,
+              "name": "load_2_1",
+              "sub_id": 2,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 2,
+              "name": "load_3_2",
+              "sub_id": 3,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 3,
+              "name": "load_4_3",
+              "sub_id": 4,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 4,
+              "name": "load_5_4",
+              "sub_id": 5,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 5,
+              "name": "load_8_5",
+              "sub_id": 8,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 6,
+              "name": "load_9_6",
+              "sub_id": 9,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 7,
+              "name": "load_10_7",
+              "sub_id": 10,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 8,
+              "name": "load_11_8",
+              "sub_id": 11,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 9,
+              "name": "load_12_9",
+              "sub_id": 12,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 10,
+              "name": "load_13_10",
+              "sub_id": 13,
+              "p": 0.0,
+              "q": 0.0
+            }
+          ],
+          "busbar_modeling_note": "Topology is rendered at substation level; dynamic dual-busbar reconfigurations within substations are evaluated numerically by Grid2Op."
+        },
+        "metrics": {
+          "survival_steps": 10,
+          "max_steps": 10,
+          "survived": true,
+          "hard_failure": false,
+          "peak_line_utilization": 1.0282,
+          "mean_line_utilization": 0.4939,
+          "overload_violations": 1,
+          "overload_severity": 0.0282,
+          "actions_taken": 1,
+          "invalid_actions": 0,
+          "forecast_mean_absolute_error": 0.0058,
+          "execution_time_ms": 164.09,
+          "resource_usage": {
+            "simulation_calls": 60,
+            "model_calls": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "model_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0
+          },
+          "fallback_used": false
+        },
+        "steps": [
+          {
+            "step": 0,
+            "max_rho": 1.0282082557678223,
+            "mean_rho": 0.4903140962123871,
+            "line_rhos": [
+              0.3411959111690521,
+              0.3800181746482849,
+              0.2741563022136688,
+              0.28502723574638367,
+              0.892549455165863,
+              0.3082045316696167,
+              0.34710177779197693,
+              0.5555635690689087,
+              0.5163096785545349,
+              0.7686439752578735,
+              0.35431259870529175,
+              0.4282170832157135,
+              0.30713117122650146,
+              0.47122740745544434,
+              0.42094674706459045,
+              0.5780906677246094,
+              0.5725074410438538,
+              1.0282082557678223,
+              0.4782695770263672,
+              0.49860090017318726
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 257.9000244140625,
+            "total_gen_mw": 262.6689758300781,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Initial state at chronic start"
+            },
+            "proposals_history": [],
+            "forecast_verification": null,
+            "reward": 0.0,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 1,
+            "max_rho": 0.9917804598808289,
+            "mean_rho": 0.510560154914856,
+            "line_rhos": [
+              0.353386789560318,
+              0.379777193069458,
+              0.28754904866218567,
+              0.28857851028442383,
+              0.8820791244506836,
+              0.3132878541946411,
+              0.40144410729408264,
+              0.0,
+              0.5567967891693115,
+              0.8636319637298584,
+              0.9917804598808289,
+              0.2754335105419159,
+              0.1455187201499939,
+              0.587378740310669,
+              0.5541237592697144,
+              0.5936495661735535,
+              0.6133965253829956,
+              0.9344349503517151,
+              0.5927574634552002,
+              0.5961987972259521
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 255.8000030517578,
+            "total_gen_mw": 260.70416259765625,
+            "action_taken": {
+              "action_id": "A4",
+              "action_type": "switch_line",
+              "target_id": 7,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A4 after evaluating 6 candidates; projected peak rho: 0.997 (baseline: 1.028)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 1.0285,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.029, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 1,
+                "rationale": "Switch Line 1 (0_4_1): relieve congestion around Bus 0-4 (rho: 0.38).",
+                "simulated_max_rho": 1.3758,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.376, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 4,
+                "rationale": "Switch Line 4 (1_4_4): relieve congestion around Bus 1-4 (rho: 0.89).",
+                "simulated_max_rho": 1.0248,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.025, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 6,
+                "rationale": "Switch Line 6 (3_4_6): relieve congestion around Bus 3-4 (rho: 0.35).",
+                "simulated_max_rho": 1.1849,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.185, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Switch Line 7 (5_10_7): relieve congestion around Bus 5-10 (rho: 0.56).",
+                "simulated_max_rho": 0.9968,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.997, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 8,
+                "rationale": "Switch Line 8 (5_11_8): relieve congestion around Bus 5-11 (rho: 0.52).",
+                "simulated_max_rho": 1.2392,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.239, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9968,
+              "actual_max_rho": 0.9917804598808289,
+              "forecast_error": 0.005
+            },
+            "reward": 62.07542037963867,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 2,
+            "max_rho": 0.9908206462860107,
+            "mean_rho": 0.5096209049224854,
+            "line_rhos": [
+              0.36997801065444946,
+              0.384532630443573,
+              0.29099416732788086,
+              0.2888014018535614,
+              0.8803605437278748,
+              0.3095877766609192,
+              0.40626394748687744,
+              0.0,
+              0.5542742013931274,
+              0.8579829335212708,
+              0.9908206462860107,
+              0.2769719362258911,
+              0.14537635445594788,
+              0.5795572400093079,
+              0.5479146838188171,
+              0.5916389226913452,
+              0.6096540093421936,
+              0.9313665628433228,
+              0.5867423415184021,
+              0.5895987749099731
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 257.20001220703125,
+            "total_gen_mw": 262.15399169921875,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.986 (baseline: 0.992)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.986,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.986, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.022,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.022, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.99).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.28).",
+                "simulated_max_rho": 1.0778,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.078, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.15).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.61).",
+                "simulated_max_rho": 1.0256,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.026, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.986,
+              "actual_max_rho": 0.9908206462860107,
+              "forecast_error": 0.0048
+            },
+            "reward": 61.73639678955078,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 3,
+            "max_rho": 0.9876929521560669,
+            "mean_rho": 0.5080876350402832,
+            "line_rhos": [
+              0.34897956252098083,
+              0.37699639797210693,
+              0.28475329279899597,
+              0.2866385579109192,
+              0.8772968649864197,
+              0.3112795948982239,
+              0.39614138007164,
+              0.0,
+              0.5497073531150818,
+              0.8557860851287842,
+              0.9876929521560669,
+              0.27511781454086304,
+              0.1462976485490799,
+              0.5890828967094421,
+              0.553810715675354,
+              0.5929321646690369,
+              0.6130316853523254,
+              0.9315574169158936,
+              0.5895422697067261,
+              0.5951085090637207
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 255.7000274658203,
+            "total_gen_mw": 260.5325927734375,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.986 (baseline: 0.991)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9856,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.986, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.0163,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.016, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.99).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.28).",
+                "simulated_max_rho": 1.07,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.070, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.15).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.61).",
+                "simulated_max_rho": 1.0193,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.019, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9856,
+              "actual_max_rho": 0.9876929521560669,
+              "forecast_error": 0.0021
+            },
+            "reward": 62.101322174072266,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 4,
+            "max_rho": 0.9722803235054016,
+            "mean_rho": 0.5013915300369263,
+            "line_rhos": [
+              0.33329641819000244,
+              0.36935675144195557,
+              0.27237218618392944,
+              0.283052533864975,
+              0.8683982491493225,
+              0.3161679208278656,
+              0.38730645179748535,
+              0.0,
+              0.5484891533851624,
+              0.8468447923660278,
+              0.9722803235054016,
+              0.28078460693359375,
+              0.14330331981182098,
+              0.5710543394088745,
+              0.5477543473243713,
+              0.5887858271598816,
+              0.6067699790000916,
+              0.9232853055000305,
+              0.5823041796684265,
+              0.586223840713501
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 252.0,
+            "total_gen_mw": 256.680419921875,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.976 (baseline: 0.988)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9761,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.976, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.0087,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.009, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.99).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.28).",
+                "simulated_max_rho": 1.0623,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.062, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.15).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.61).",
+                "simulated_max_rho": 1.0115,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.011, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9761,
+              "actual_max_rho": 0.9722803235054016,
+              "forecast_error": 0.0038
+            },
+            "reward": 63.01665496826172,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 5,
+            "max_rho": 0.971646249294281,
+            "mean_rho": 0.4961051940917969,
+            "line_rhos": [
+              0.32205983996391296,
+              0.3631645143032074,
+              0.2648966610431671,
+              0.2801130414009094,
+              0.8595156669616699,
+              0.31683993339538574,
+              0.3828273415565491,
+              0.0,
+              0.5399385690689087,
+              0.8387253284454346,
+              0.971646249294281,
+              0.2766208052635193,
+              0.14320889115333557,
+              0.5725080370903015,
+              0.5440801978111267,
+              0.5831559896469116,
+              0.6000421643257141,
+              0.9064533710479736,
+              0.57709801197052,
+              0.5792088508605957
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 250.19998168945312,
+            "total_gen_mw": 254.7576904296875,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.972 (baseline: 0.972)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9716,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.972, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.0002,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.000, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.97).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.28).",
+                "simulated_max_rho": 1.052,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.052, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.61).",
+                "simulated_max_rho": 1.0022,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.002, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9716,
+              "actual_max_rho": 0.971646249294281,
+              "forecast_error": 0.0
+            },
+            "reward": 63.472877502441406,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 6,
+            "max_rho": 0.9566663503646851,
+            "mean_rho": 0.49414825439453125,
+            "line_rhos": [
+              0.3360283672809601,
+              0.367160826921463,
+              0.27478447556495667,
+              0.28018778562545776,
+              0.8582044243812561,
+              0.3072844445705414,
+              0.3860723674297333,
+              0.0,
+              0.540635883808136,
+              0.8318403959274292,
+              0.9566663503646851,
+              0.2744671106338501,
+              0.14229516685009003,
+              0.5562865734100342,
+              0.5337663888931274,
+              0.5822864174842834,
+              0.5974245667457581,
+              0.9108592867851257,
+              0.5728099346160889,
+              0.5739037990570068
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 249.1999969482422,
+            "total_gen_mw": 253.78675842285156,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.962 (baseline: 0.972)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.962,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.962, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9926,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.993, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.97).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.28).",
+                "simulated_max_rho": 1.0441,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.044, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.60).",
+                "simulated_max_rho": 0.9944,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.994, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.962,
+              "actual_max_rho": 0.9566663503646851,
+              "forecast_error": 0.0053
+            },
+            "reward": 63.72690200805664,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 7,
+            "max_rho": 0.9312613606452942,
+            "mean_rho": 0.4870433211326599,
+            "line_rhos": [
+              0.32552048563957214,
+              0.36095547676086426,
+              0.2685008943080902,
+              0.27674102783203125,
+              0.8484199643135071,
+              0.3055747449398041,
+              0.3797849118709564,
+              0.0,
+              0.5334304571151733,
+              0.8206957578659058,
+              0.9312613606452942,
+              0.2778463363647461,
+              0.13742168247699738,
+              0.5478081703186035,
+              0.5332242846488953,
+              0.5752720236778259,
+              0.5890920162200928,
+              0.8965880274772644,
+              0.5671316385269165,
+              0.5655969381332397
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 246.40000915527344,
+            "total_gen_mw": 250.85545349121094,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.951 (baseline: 0.957)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9508,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.951, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9811,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.981, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.96).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.27).",
+                "simulated_max_rho": 1.0336,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.034, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.60).",
+                "simulated_max_rho": 0.9831,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.983, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9508,
+              "actual_max_rho": 0.9312613606452942,
+              "forecast_error": 0.0195
+            },
+            "reward": 64.45417785644531,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 8,
+            "max_rho": 0.939970076084137,
+            "mean_rho": 0.4831291139125824,
+            "line_rhos": [
+              0.32221484184265137,
+              0.35774606466293335,
+              0.2622634470462799,
+              0.2745608985424042,
+              0.8413388729095459,
+              0.30757611989974976,
+              0.3779849410057068,
+              0.0,
+              0.5259533524513245,
+              0.8117493987083435,
+              0.939970076084137,
+              0.26958218216896057,
+              0.14013540744781494,
+              0.5482534766197205,
+              0.525676429271698,
+              0.5689088702201843,
+              0.5808159708976746,
+              0.8855448365211487,
+              0.5644711852073669,
+              0.5578358769416809
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 244.09999084472656,
+            "total_gen_mw": 248.47720336914062,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.931 (baseline: 0.931)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9412,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.941, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9708,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.971, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.93).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.28).",
+                "simulated_max_rho": 1.0208,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.021, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.59).",
+                "simulated_max_rho": 0.9722,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.972, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9412,
+              "actual_max_rho": 0.939970076084137,
+              "forecast_error": 0.0012
+            },
+            "reward": 65.06336212158203,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 9,
+            "max_rho": 0.9277178645133972,
+            "mean_rho": 0.4787219166755676,
+            "line_rhos": [
+              0.32881274819374084,
+              0.35789430141448975,
+              0.2727750539779663,
+              0.2729429006576538,
+              0.8344014286994934,
+              0.291604220867157,
+              0.37905266880989075,
+              0.0,
+              0.52046138048172,
+              0.804874062538147,
+              0.9277178645133972,
+              0.2620273232460022,
+              0.13524211943149567,
+              0.5451330542564392,
+              0.516477108001709,
+              0.5647962093353271,
+              0.5762515664100647,
+              0.8754987716674805,
+              0.5567501783370972,
+              0.5517244338989258
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 243.6999969482422,
+            "total_gen_mw": 248.03590393066406,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.922 (baseline: 0.940)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9222,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.922, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.959,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.959, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.94).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.27).",
+                "simulated_max_rho": 1.0103,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 1.010, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.58).",
+                "simulated_max_rho": 0.9605,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.961, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9222,
+              "actual_max_rho": 0.9277178645133972,
+              "forecast_error": 0.0055
+            },
+            "reward": 65.171142578125,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 10,
+            "max_rho": 0.9111154079437256,
+            "mean_rho": 0.4733276963233948,
+            "line_rhos": [
+              0.33225351572036743,
+              0.35580188035964966,
+              0.2635555565357208,
+              0.2692577540874481,
+              0.8237717747688293,
+              0.29232415556907654,
+              0.37220335006713867,
+              0.0,
+              0.5143510103225708,
+              0.7912982106208801,
+              0.9111154079437256,
+              0.2639315128326416,
+              0.1350892186164856,
+              0.5261198878288269,
+              0.5089923739433289,
+              0.5630910396575928,
+              0.5741002559661865,
+              0.8730104565620422,
+              0.5492873787879944,
+              0.5469984412193298
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 240.60000610351562,
+            "total_gen_mw": 244.8426971435547,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Selected A0 after evaluating 6 candidates; projected peak rho: 0.922 (baseline: 0.928)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A0",
+                "action_type": "noop",
+                "target_id": null,
+                "rationale": "Do Nothing: Passively maintain current network topology and generator setpoints.",
+                "simulated_max_rho": 0.9217,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.922, done=False",
+                "selected": true
+              },
+              {
+                "round_index": 2,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9485,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.948, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.93).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 4,
+                "action_id": "A3",
+                "action_type": "switch_line",
+                "target_id": 11,
+                "rationale": "Switch Line 11 (8_13_11): relieve congestion around Bus 8-13 (rho: 0.26).",
+                "simulated_max_rho": 0.9976,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.998, done=False",
+                "selected": false
+              },
+              {
+                "round_index": 5,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulated peak rho: 0.000, done=True",
+                "selected": false
+              },
+              {
+                "round_index": 6,
+                "action_id": "A5",
+                "action_type": "switch_line",
+                "target_id": 16,
+                "rationale": "Switch Line 16 (3_8_16): relieve congestion around Bus 3-8 (rho: 0.58).",
+                "simulated_max_rho": 0.9491,
+                "simulated_done": false,
+                "feedback": "Simulated peak rho: 0.949, done=False",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9217,
+              "actual_max_rho": 0.9111154079437256,
+              "forecast_error": 0.0106
+            },
+            "reward": 66.01309204101562,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          }
+        ]
+      }
+    },
+    {
+      "record": {
+        "id": "exp_dev_chronic_0003_overload_refinement_llm_2193fe",
+        "scenario_id": "dev_chronic_0003_overload",
+        "controller_type": "refinement_llm",
+        "timestamp": "2026-11-08T19:47:06.155845+00:00",
+        "provenance": {
+          "timestamp_utc": "2026-11-08T19:47:06.155724+00:00",
+          "python_version": "3.12.7",
+          "grid2op_version": "1.12.6",
+          "backend_class": "LightSimBackend_l2rpn_case14_sandboxLightSimBackend",
+          "platform": "macOS-15.5-arm64-arm-64bit",
+          "env_name": "l2rpn_case14_sandbox",
+          "chronic_subpath": "/Users/bradleyharaguchi/data_grid2op/l2rpn_case14_sandbox/chronics/0003",
+          "chronic_id": 3,
+          "start_step": 0,
+          "seed": 42,
+          "max_steps": 10,
+          "disturbances": []
+        },
+        "metrics": {
+          "survival_steps": 10,
+          "max_steps": 10,
+          "survived": true,
+          "hard_failure": false,
+          "peak_line_utilization": 1.0282,
+          "mean_line_utilization": 0.4939,
+          "overload_violations": 1,
+          "overload_severity": 0.0282,
+          "actions_taken": 1,
+          "invalid_actions": 0,
+          "forecast_mean_absolute_error": 0.005,
+          "execution_time_ms": 69.1,
+          "resource_usage": {
+            "simulation_calls": 30,
+            "model_calls": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "model_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0
+          },
+          "fallback_used": true
+        },
+        "actions_summary": [
+          "Step 1 (refinement_llm): [Simulation-Guided Refinement - Offline Fallback] Selected A4 after 3 evaluation rounds (projected rho: 0.997)."
+        ]
+      },
+      "replay": {
+        "experiment_id": "exp_dev_chronic_0003_overload_refinement_llm_2193fe",
+        "scenario_id": "dev_chronic_0003_overload",
+        "controller_type": "refinement_llm",
+        "provenance": {
+          "timestamp_utc": "2026-11-08T19:47:06.155724+00:00",
+          "python_version": "3.12.7",
+          "grid2op_version": "1.12.6",
+          "backend_class": "LightSimBackend_l2rpn_case14_sandboxLightSimBackend",
+          "platform": "macOS-15.5-arm64-arm-64bit",
+          "env_name": "l2rpn_case14_sandbox",
+          "chronic_subpath": "/Users/bradleyharaguchi/data_grid2op/l2rpn_case14_sandbox/chronics/0003",
+          "chronic_id": 3,
+          "start_step": 0,
+          "seed": 42,
+          "max_steps": 10,
+          "disturbances": []
+        },
+        "topology": {
+          "name": "l2rpn_case14_sandbox",
+          "n_sub": 14,
+          "n_line": 20,
+          "n_gen": 6,
+          "n_load": 11,
+          "substations": [
+            {
+              "id": 0,
+              "name": "sub_0",
+              "pos_x": 100.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                0,
+                1
+              ],
+              "generators": [
+                5
+              ],
+              "loads": []
+            },
+            {
+              "id": 1,
+              "name": "sub_1",
+              "pos_x": 260.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                0,
+                2,
+                3,
+                4
+              ],
+              "generators": [
+                0
+              ],
+              "loads": [
+                0
+              ]
+            },
+            {
+              "id": 2,
+              "name": "sub_2",
+              "pos_x": 120.0,
+              "pos_y": 260.0,
+              "connected_lines": [
+                2,
+                5
+              ],
+              "generators": [
+                1
+              ],
+              "loads": [
+                1
+              ]
+            },
+            {
+              "id": 3,
+              "name": "sub_3",
+              "pos_x": 300.0,
+              "pos_y": 260.0,
+              "connected_lines": [
+                3,
+                5,
+                6,
+                15,
+                16
+              ],
+              "generators": [],
+              "loads": [
+                2
+              ]
+            },
+            {
+              "id": 4,
+              "name": "sub_4",
+              "pos_x": 210.0,
+              "pos_y": 330.0,
+              "connected_lines": [
+                1,
+                4,
+                6,
+                17
+              ],
+              "generators": [],
+              "loads": [
+                3
+              ]
+            },
+            {
+              "id": 5,
+              "name": "sub_5",
+              "pos_x": 480.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                7,
+                8,
+                9,
+                17
+              ],
+              "generators": [
+                2,
+                3
+              ],
+              "loads": [
+                4
+              ]
+            },
+            {
+              "id": 6,
+              "name": "sub_6",
+              "pos_x": 440.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                15,
+                18,
+                19
+              ],
+              "generators": [],
+              "loads": []
+            },
+            {
+              "id": 7,
+              "name": "sub_7",
+              "pos_x": 520.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                18
+              ],
+              "generators": [
+                4
+              ],
+              "loads": []
+            },
+            {
+              "id": 8,
+              "name": "sub_8",
+              "pos_x": 380.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                10,
+                11,
+                16,
+                19
+              ],
+              "generators": [],
+              "loads": [
+                5
+              ]
+            },
+            {
+              "id": 9,
+              "name": "sub_9",
+              "pos_x": 490.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                10,
+                12
+              ],
+              "generators": [],
+              "loads": [
+                6
+              ]
+            },
+            {
+              "id": 10,
+              "name": "sub_10",
+              "pos_x": 460.0,
+              "pos_y": 90.0,
+              "connected_lines": [
+                7,
+                12
+              ],
+              "generators": [],
+              "loads": [
+                7
+              ]
+            },
+            {
+              "id": 11,
+              "name": "sub_11",
+              "pos_x": 600.0,
+              "pos_y": 420.0,
+              "connected_lines": [
+                8,
+                13
+              ],
+              "generators": [],
+              "loads": [
+                8
+              ]
+            },
+            {
+              "id": 12,
+              "name": "sub_12",
+              "pos_x": 600.0,
+              "pos_y": 300.0,
+              "connected_lines": [
+                9,
+                13,
+                14
+              ],
+              "generators": [],
+              "loads": [
+                9
+              ]
+            },
+            {
+              "id": 13,
+              "name": "sub_13",
+              "pos_x": 560.0,
+              "pos_y": 180.0,
+              "connected_lines": [
+                11,
+                14
+              ],
+              "generators": [],
+              "loads": [
+                10
+              ]
+            }
+          ],
+          "lines": [
+            {
+              "id": 0,
+              "name": "0_1_0",
+              "from_sub": 0,
+              "to_sub": 1,
+              "thermal_limit": 541.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 1,
+              "name": "0_4_1",
+              "from_sub": 0,
+              "to_sub": 4,
+              "thermal_limit": 450.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 2,
+              "name": "1_2_2",
+              "from_sub": 1,
+              "to_sub": 2,
+              "thermal_limit": 375.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 3,
+              "name": "1_3_3",
+              "from_sub": 1,
+              "to_sub": 3,
+              "thermal_limit": 636.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 4,
+              "name": "1_4_4",
+              "from_sub": 1,
+              "to_sub": 4,
+              "thermal_limit": 175.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 5,
+              "name": "2_3_5",
+              "from_sub": 2,
+              "to_sub": 3,
+              "thermal_limit": 285.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 6,
+              "name": "3_4_6",
+              "from_sub": 3,
+              "to_sub": 4,
+              "thermal_limit": 335.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 7,
+              "name": "5_10_7",
+              "from_sub": 5,
+              "to_sub": 10,
+              "thermal_limit": 657.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 8,
+              "name": "5_11_8",
+              "from_sub": 5,
+              "to_sub": 11,
+              "thermal_limit": 496.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 9,
+              "name": "5_12_9",
+              "from_sub": 5,
+              "to_sub": 12,
+              "thermal_limit": 827.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 10,
+              "name": "8_9_10",
+              "from_sub": 8,
+              "to_sub": 9,
+              "thermal_limit": 442.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 11,
+              "name": "8_13_11",
+              "from_sub": 8,
+              "to_sub": 13,
+              "thermal_limit": 641.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 12,
+              "name": "9_10_12",
+              "from_sub": 9,
+              "to_sub": 10,
+              "thermal_limit": 840.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 13,
+              "name": "11_12_13",
+              "from_sub": 11,
+              "to_sub": 12,
+              "thermal_limit": 156.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 14,
+              "name": "12_13_14",
+              "from_sub": 12,
+              "to_sub": 13,
+              "thermal_limit": 664.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 15,
+              "name": "3_6_15",
+              "from_sub": 3,
+              "to_sub": 6,
+              "thermal_limit": 235.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 16,
+              "name": "3_8_16",
+              "from_sub": 3,
+              "to_sub": 8,
+              "thermal_limit": 119.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 17,
+              "name": "4_5_17",
+              "from_sub": 4,
+              "to_sub": 5,
+              "thermal_limit": 179.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 18,
+              "name": "6_7_18",
+              "from_sub": 6,
+              "to_sub": 7,
+              "thermal_limit": 1986.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            },
+            {
+              "id": 19,
+              "name": "6_8_19",
+              "from_sub": 8,
+              "to_sub": 6,
+              "thermal_limit": 1572.0,
+              "rho": 0.0,
+              "status": true,
+              "p_or": 0.0,
+              "q_or": 0.0
+            }
+          ],
+          "generators": [
+            {
+              "id": 0,
+              "name": "gen_1_0",
+              "sub_id": 1,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 140.0
+            },
+            {
+              "id": 1,
+              "name": "gen_2_1",
+              "sub_id": 2,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 120.0
+            },
+            {
+              "id": 2,
+              "name": "gen_5_2",
+              "sub_id": 5,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 70.0
+            },
+            {
+              "id": 3,
+              "name": "gen_5_3",
+              "sub_id": 5,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 70.0
+            },
+            {
+              "id": 4,
+              "name": "gen_7_4",
+              "sub_id": 7,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 40.0
+            },
+            {
+              "id": 5,
+              "name": "gen_0_5",
+              "sub_id": 0,
+              "p": 0.0,
+              "p_min": 0.0,
+              "p_max": 100.0
+            }
+          ],
+          "loads": [
+            {
+              "id": 0,
+              "name": "load_1_0",
+              "sub_id": 1,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 1,
+              "name": "load_2_1",
+              "sub_id": 2,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 2,
+              "name": "load_3_2",
+              "sub_id": 3,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 3,
+              "name": "load_4_3",
+              "sub_id": 4,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 4,
+              "name": "load_5_4",
+              "sub_id": 5,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 5,
+              "name": "load_8_5",
+              "sub_id": 8,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 6,
+              "name": "load_9_6",
+              "sub_id": 9,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 7,
+              "name": "load_10_7",
+              "sub_id": 10,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 8,
+              "name": "load_11_8",
+              "sub_id": 11,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 9,
+              "name": "load_12_9",
+              "sub_id": 12,
+              "p": 0.0,
+              "q": 0.0
+            },
+            {
+              "id": 10,
+              "name": "load_13_10",
+              "sub_id": 13,
+              "p": 0.0,
+              "q": 0.0
+            }
+          ],
+          "busbar_modeling_note": "Topology is rendered at substation level; dynamic dual-busbar reconfigurations within substations are evaluated numerically by Grid2Op."
+        },
+        "metrics": {
+          "survival_steps": 10,
+          "max_steps": 10,
+          "survived": true,
+          "hard_failure": false,
+          "peak_line_utilization": 1.0282,
+          "mean_line_utilization": 0.4939,
+          "overload_violations": 1,
+          "overload_severity": 0.0282,
+          "actions_taken": 1,
+          "invalid_actions": 0,
+          "forecast_mean_absolute_error": 0.005,
+          "execution_time_ms": 69.1,
+          "resource_usage": {
+            "simulation_calls": 30,
+            "model_calls": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "model_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0
+          },
+          "fallback_used": true
+        },
+        "steps": [
+          {
+            "step": 0,
+            "max_rho": 1.0282082557678223,
+            "mean_rho": 0.4903140962123871,
+            "line_rhos": [
+              0.3411959111690521,
+              0.3800181746482849,
+              0.2741563022136688,
+              0.28502723574638367,
+              0.892549455165863,
+              0.3082045316696167,
+              0.34710177779197693,
+              0.5555635690689087,
+              0.5163096785545349,
+              0.7686439752578735,
+              0.35431259870529175,
+              0.4282170832157135,
+              0.30713117122650146,
+              0.47122740745544434,
+              0.42094674706459045,
+              0.5780906677246094,
+              0.5725074410438538,
+              1.0282082557678223,
+              0.4782695770263672,
+              0.49860090017318726
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 257.9000244140625,
+            "total_gen_mw": 262.6689758300781,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "Initial state at chronic start"
+            },
+            "proposals_history": [],
+            "forecast_verification": null,
+            "reward": 0.0,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": false
+          },
+          {
+            "step": 1,
+            "max_rho": 0.9917804598808289,
+            "mean_rho": 0.510560154914856,
+            "line_rhos": [
+              0.353386789560318,
+              0.379777193069458,
+              0.28754904866218567,
+              0.28857851028442383,
+              0.8820791244506836,
+              0.3132878541946411,
+              0.40144410729408264,
+              0.0,
+              0.5567967891693115,
+              0.8636319637298584,
+              0.9917804598808289,
+              0.2754335105419159,
+              0.1455187201499939,
+              0.587378740310669,
+              0.5541237592697144,
+              0.5936495661735535,
+              0.6133965253829956,
+              0.9344349503517151,
+              0.5927574634552002,
+              0.5961987972259521
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 255.8000030517578,
+            "total_gen_mw": 260.70416259765625,
+            "action_taken": {
+              "action_id": "A4",
+              "action_type": "switch_line",
+              "target_id": 7,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A4 after 3 evaluation rounds (projected rho: 0.997)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 1,
+                "rationale": "Switch Line 1 (0_4_1): relieve congestion around Bus 0-4 (rho: 0.38).",
+                "simulated_max_rho": 1.3758,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 leaves severe overload (rho: 1.376). Rejected, revising.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Switch Line 7 (5_10_7): relieve congestion around Bus 5-10 (rho: 0.56).",
+                "simulated_max_rho": 0.9968,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A4 relieves overload (rho: 0.997). Accepted.",
+                "selected": true
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 4,
+                "rationale": "Switch Line 4 (1_4_4): relieve congestion around Bus 1-4 (rho: 0.89).",
+                "simulated_max_rho": 1.0248,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A2 leaves severe overload (rho: 1.025). Rejected, revising.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": {
+              "forecasted_max_rho": 0.9968,
+              "actual_max_rho": 0.9917804598808289,
+              "forecast_error": 0.005
+            },
+            "reward": 62.07542037963867,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 2,
+            "max_rho": 0.9908206462860107,
+            "mean_rho": 0.5096209049224854,
+            "line_rhos": [
+              0.36997801065444946,
+              0.384532630443573,
+              0.29099416732788086,
+              0.2888014018535614,
+              0.8803605437278748,
+              0.3095877766609192,
+              0.40626394748687744,
+              0.0,
+              0.5542742013931274,
+              0.8579829335212708,
+              0.9908206462860107,
+              0.2769719362258911,
+              0.14537635445594788,
+              0.5795572400093079,
+              0.5479146838188171,
+              0.5916389226913452,
+              0.6096540093421936,
+              0.9313665628433228,
+              0.5867423415184021,
+              0.5895987749099731
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 257.20001220703125,
+            "total_gen_mw": 262.15399169921875,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.992)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.022,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 leaves severe overload (rho: 1.022). Rejected, revising.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.15).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.99).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 61.73639678955078,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 3,
+            "max_rho": 0.9876929521560669,
+            "mean_rho": 0.5080876350402832,
+            "line_rhos": [
+              0.34897956252098083,
+              0.37699639797210693,
+              0.28475329279899597,
+              0.2866385579109192,
+              0.8772968649864197,
+              0.3112795948982239,
+              0.39614138007164,
+              0.0,
+              0.5497073531150818,
+              0.8557860851287842,
+              0.9876929521560669,
+              0.27511781454086304,
+              0.1462976485490799,
+              0.5890828967094421,
+              0.553810715675354,
+              0.5929321646690369,
+              0.6130316853523254,
+              0.9315574169158936,
+              0.5895422697067261,
+              0.5951085090637207
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 255.7000274658203,
+            "total_gen_mw": 260.5325927734375,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.991)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.0163,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 leaves severe overload (rho: 1.016). Rejected, revising.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.15).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.99).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 62.101322174072266,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 4,
+            "max_rho": 0.9722803235054016,
+            "mean_rho": 0.5013915300369263,
+            "line_rhos": [
+              0.33329641819000244,
+              0.36935675144195557,
+              0.27237218618392944,
+              0.283052533864975,
+              0.8683982491493225,
+              0.3161679208278656,
+              0.38730645179748535,
+              0.0,
+              0.5484891533851624,
+              0.8468447923660278,
+              0.9722803235054016,
+              0.28078460693359375,
+              0.14330331981182098,
+              0.5710543394088745,
+              0.5477543473243713,
+              0.5887858271598816,
+              0.6067699790000916,
+              0.9232853055000305,
+              0.5823041796684265,
+              0.586223840713501
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 252.0,
+            "total_gen_mw": 256.680419921875,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.988)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.0087,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 leaves severe overload (rho: 1.009). Rejected, revising.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.15).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.99).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 63.01665496826172,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 5,
+            "max_rho": 0.971646249294281,
+            "mean_rho": 0.4961051940917969,
+            "line_rhos": [
+              0.32205983996391296,
+              0.3631645143032074,
+              0.2648966610431671,
+              0.2801130414009094,
+              0.8595156669616699,
+              0.31683993339538574,
+              0.3828273415565491,
+              0.0,
+              0.5399385690689087,
+              0.8387253284454346,
+              0.971646249294281,
+              0.2766208052635193,
+              0.14320889115333557,
+              0.5725080370903015,
+              0.5440801978111267,
+              0.5831559896469116,
+              0.6000421643257141,
+              0.9064533710479736,
+              0.57709801197052,
+              0.5792088508605957
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 250.19998168945312,
+            "total_gen_mw": 254.7576904296875,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.972)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 1.0002,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 leaves severe overload (rho: 1.000). Rejected, revising.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.97).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 63.472877502441406,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 6,
+            "max_rho": 0.9566663503646851,
+            "mean_rho": 0.49414825439453125,
+            "line_rhos": [
+              0.3360283672809601,
+              0.367160826921463,
+              0.27478447556495667,
+              0.28018778562545776,
+              0.8582044243812561,
+              0.3072844445705414,
+              0.3860723674297333,
+              0.0,
+              0.540635883808136,
+              0.8318403959274292,
+              0.9566663503646851,
+              0.2744671106338501,
+              0.14229516685009003,
+              0.5562865734100342,
+              0.5337663888931274,
+              0.5822864174842834,
+              0.5974245667457581,
+              0.9108592867851257,
+              0.5728099346160889,
+              0.5739037990570068
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 249.1999969482422,
+            "total_gen_mw": 253.78675842285156,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.972)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9926,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 relieves overload (rho: 0.993). Accepted.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.97).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 63.72690200805664,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 7,
+            "max_rho": 0.9312613606452942,
+            "mean_rho": 0.4870433211326599,
+            "line_rhos": [
+              0.32552048563957214,
+              0.36095547676086426,
+              0.2685008943080902,
+              0.27674102783203125,
+              0.8484199643135071,
+              0.3055747449398041,
+              0.3797849118709564,
+              0.0,
+              0.5334304571151733,
+              0.8206957578659058,
+              0.9312613606452942,
+              0.2778463363647461,
+              0.13742168247699738,
+              0.5478081703186035,
+              0.5332242846488953,
+              0.5752720236778259,
+              0.5890920162200928,
+              0.8965880274772644,
+              0.5671316385269165,
+              0.5655969381332397
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 246.40000915527344,
+            "total_gen_mw": 250.85545349121094,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.957)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9811,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 relieves overload (rho: 0.981). Accepted.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.96).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 64.45417785644531,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 8,
+            "max_rho": 0.939970076084137,
+            "mean_rho": 0.4831291139125824,
+            "line_rhos": [
+              0.32221484184265137,
+              0.35774606466293335,
+              0.2622634470462799,
+              0.2745608985424042,
+              0.8413388729095459,
+              0.30757611989974976,
+              0.3779849410057068,
+              0.0,
+              0.5259533524513245,
+              0.8117493987083435,
+              0.939970076084137,
+              0.26958218216896057,
+              0.14013540744781494,
+              0.5482534766197205,
+              0.525676429271698,
+              0.5689088702201843,
+              0.5808159708976746,
+              0.8855448365211487,
+              0.5644711852073669,
+              0.5578358769416809
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 244.09999084472656,
+            "total_gen_mw": 248.47720336914062,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.931)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9708,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 relieves overload (rho: 0.971). Accepted.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.93).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 65.06336212158203,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 9,
+            "max_rho": 0.9277178645133972,
+            "mean_rho": 0.4787219166755676,
+            "line_rhos": [
+              0.32881274819374084,
+              0.35789430141448975,
+              0.2727750539779663,
+              0.2729429006576538,
+              0.8344014286994934,
+              0.291604220867157,
+              0.37905266880989075,
+              0.0,
+              0.52046138048172,
+              0.804874062538147,
+              0.9277178645133972,
+              0.2620273232460022,
+              0.13524211943149567,
+              0.5451330542564392,
+              0.516477108001709,
+              0.5647962093353271,
+              0.5762515664100647,
+              0.8754987716674805,
+              0.5567501783370972,
+              0.5517244338989258
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 243.6999969482422,
+            "total_gen_mw": 248.03590393066406,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.940)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.959,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 relieves overload (rho: 0.959). Accepted.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.94).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 65.171142578125,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          },
+          {
+            "step": 10,
+            "max_rho": 0.9111154079437256,
+            "mean_rho": 0.4733276963233948,
+            "line_rhos": [
+              0.33225351572036743,
+              0.35580188035964966,
+              0.2635555565357208,
+              0.2692577540874481,
+              0.8237717747688293,
+              0.29232415556907654,
+              0.37220335006713867,
+              0.0,
+              0.5143510103225708,
+              0.7912982106208801,
+              0.9111154079437256,
+              0.2639315128326416,
+              0.1350892186164856,
+              0.5261198878288269,
+              0.5089923739433289,
+              0.5630910396575928,
+              0.5741002559661865,
+              0.8730104565620422,
+              0.5492873787879944,
+              0.5469984412193298
+            ],
+            "line_status": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "total_load_mw": 240.60000610351562,
+            "total_gen_mw": 244.8426971435547,
+            "action_taken": {
+              "action_id": "A0",
+              "action_type": "noop",
+              "target_id": null,
+              "target_bus": null,
+              "redispatch_val": null,
+              "rationale": "[Simulation-Guided Refinement - Offline Fallback] Selected A0 after 3 evaluation rounds (projected rho: 0.928)."
+            },
+            "proposals_history": [
+              {
+                "round_index": 1,
+                "action_id": "A1",
+                "action_type": "switch_line",
+                "target_id": 7,
+                "rationale": "Reconnect Line 7 (5_10_7): restore corridor connectivity.",
+                "simulated_max_rho": 0.9485,
+                "simulated_done": false,
+                "feedback": "Simulation feedback: A1 relieves overload (rho: 0.948). Accepted.",
+                "selected": false
+              },
+              {
+                "round_index": 2,
+                "action_id": "A4",
+                "action_type": "switch_line",
+                "target_id": 12,
+                "rationale": "Switch Line 12 (9_10_12): relieve congestion around Bus 9-10 (rho: 0.14).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A4 causes blackout. Rejected.",
+                "selected": false
+              },
+              {
+                "round_index": 3,
+                "action_id": "A2",
+                "action_type": "switch_line",
+                "target_id": 10,
+                "rationale": "Switch Line 10 (8_9_10): relieve congestion around Bus 8-9 (rho: 0.93).",
+                "simulated_max_rho": 0.0,
+                "simulated_done": true,
+                "feedback": "Simulation feedback: A2 causes blackout. Rejected.",
+                "selected": false
+              }
+            ],
+            "forecast_verification": null,
+            "reward": 66.01309204101562,
+            "done": false,
+            "done_reason": null,
+            "fallback_used": true
+          }
+        ]
+      }
+    }
+  ]
+}

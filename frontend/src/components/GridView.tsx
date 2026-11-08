@@ -140,6 +140,11 @@ export const GridView: React.FC<GridViewProps> = ({
         <Controls className="!bg-slate-900 !border-slate-800 !fill-slate-300" />
       </ReactFlow>
 
+      {/* Modeling & Busbar Note Banner */}
+      <div className="absolute top-4 left-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-lg text-[10px] text-slate-400 max-w-sm pointer-events-none shadow-md">
+        <span className="font-semibold text-slate-300">Modeling Scope:</span> Substation-level topology view. Dual-busbar splitting actions are resolved by the underlying Grid2Op solver.
+      </div>
+
       {/* Legend Overlay */}
       <div className="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-3 rounded-lg text-xs space-y-1.5 shadow-lg pointer-events-none">
         <div className="font-semibold text-slate-300 text-[11px] mb-1">Thermal Loading (ρ)</div>

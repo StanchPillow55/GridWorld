@@ -1,9 +1,19 @@
 import logging
+import platform
+import sys
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
+
 import grid2op
 from grid2op.Action import BaseAction
 from grid2op.Observation import BaseObservation
+
+try:
+    from lightsim2grid import LightSimBackend
+    DEFAULT_BACKEND = LightSimBackend
+except ImportError:
+    DEFAULT_BACKEND = None
 
 from backend.app.schemas import (
     GridTopology,
@@ -13,12 +23,14 @@ from backend.app.schemas import (
     LoadInfo,
     StepObservation,
     ActionProposal,
-    ActionType
+    ActionType,
+    CandidateAction,
+    ProvenanceMetadata,
+    ScenarioDisturbance
 )
 
 logger = logging.getLogger(__name__)
 
-# Canonical 2D layout coordinates for IEEE 14-bus substations for clear React Flow graph rendering
 SUBSTATION_LAYOUT = {
     0: (100.0, 420.0),   # Sub 0 (Bus 1, Slack Gen)
     1: (260.0, 420.0),   # Sub 1 (Bus 2, Gen)
@@ -38,12 +50,54 @@ SUBSTATION_LAYOUT = {
 
 
 class Grid2OpAdapter:
-    """Adapter bridging Grid2Op environment with structured GridWorld schemas."""
+    """Rigorous adapter for Grid2Op simulation, chronic indexing, and candidate catalog generation."""
 
     def __init__(self, env_name: str = "l2rpn_case14_sandbox"):
         self.env_name = env_name
-        self.env = grid2op.make(self.env_name)
+        backend_inst = DEFAULT_BACKEND() if DEFAULT_BACKEND is not None else None
+        if backend_inst is not None:
+            self.env = grid2op.make(self.env_name, backend=backend_inst)
+        else:
+            self.env = grid2op.make(self.env_name)
+
         self._topology: Optional[GridTopology] = None
+        self.current_chronic_id: int = 0
+        self.current_seed: int = 42
+
+        # Cache static topology while environment is cleanly initialized
+        self.get_topology()
+
+    def reset_chronic(self, chronic_id: int = 0, seed: int = 42) -> BaseObservation:
+        self.current_chronic_id = chronic_id
+        self.current_seed = seed
+        self.env.set_id(chronic_id)
+        self.env.seed(seed)
+        obs = self.env.reset()
+        return obs
+
+    def get_provenance_metadata(
+        self,
+        max_steps: int,
+        disturbances: List[ScenarioDisturbance]
+    ) -> ProvenanceMetadata:
+        chronic_subpath = "unknown"
+        if hasattr(self.env, "chronics_handler"):
+            chronic_subpath = str(self.env.chronics_handler.get_id())
+
+        return ProvenanceMetadata(
+            timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            python_version=platform.python_version(),
+            grid2op_version=grid2op.__version__,
+            backend_class=self.env.backend.__class__.__name__,
+            platform=platform.platform(),
+            env_name=self.env_name,
+            chronic_subpath=chronic_subpath,
+            chronic_id=self.current_chronic_id,
+            start_step=0,
+            seed=self.current_seed,
+            max_steps=max_steps,
+            disturbances=disturbances
+        )
 
     def get_topology(self) -> GridTopology:
         if self._topology is not None:
@@ -124,6 +178,78 @@ class Grid2OpAdapter:
         )
         return self._topology
 
+    def get_candidate_actions(self, obs: BaseObservation, max_candidates: int = 8) -> List[CandidateAction]:
+        """
+        Generate a discrete, bounded catalog of legal, relevant action candidates
+        tailored to the current electrical state.
+        Always includes A0 (NOOP).
+        """
+        candidates: List[CandidateAction] = [
+            CandidateAction(
+                action_id="A0",
+                action_type=ActionType.NOOP,
+                description="Do Nothing: Passively maintain current network topology and generator setpoints."
+            )
+        ]
+
+        action_idx = 1
+        line_status = obs.line_status
+        disconnected = np.where(~line_status)[0]
+
+        # 1. Reconnection candidates for disconnected lines
+        for l_id in disconnected:
+            candidates.append(
+                CandidateAction(
+                    action_id=f"A{action_idx}",
+                    action_type=ActionType.SWITCH_LINE,
+                    target_id=int(l_id),
+                    description=f"Reconnect Line {l_id} ({self.env.name_line[l_id]}): restore corridor connectivity."
+                )
+            )
+            action_idx += 1
+            if len(candidates) >= max_candidates:
+                return candidates
+
+        # 2. Targeted topological switching for lines connected to the highest-congestion lines
+        rhos = obs.rho
+        sorted_lines = np.argsort(rhos)[::-1]
+        worst_line = int(sorted_lines[0])
+
+        # Prioritize lines electrically connected to the endpoints of the worst line
+        candidate_line_set = []
+        if rhos[worst_line] >= 0.85:
+            sub_or = int(self.env.line_or_to_subid[worst_line])
+            sub_ex = int(self.env.line_ex_to_subid[worst_line])
+            adjacent_lines = np.unique(np.concatenate([
+                np.where(self.env.line_or_to_subid == sub_or)[0],
+                np.where(self.env.line_ex_to_subid == sub_or)[0],
+                np.where(self.env.line_or_to_subid == sub_ex)[0],
+                np.where(self.env.line_ex_to_subid == sub_ex)[0]
+            ]))
+            for l_id in adjacent_lines:
+                if l_id not in candidate_line_set and line_status[l_id]:
+                    candidate_line_set.append(int(l_id))
+
+        # Add remaining high-loading lines
+        for l_id in sorted_lines:
+            if l_id not in candidate_line_set and line_status[l_id]:
+                candidate_line_set.append(int(l_id))
+
+        for l_id in candidate_line_set:
+            candidates.append(
+                CandidateAction(
+                    action_id=f"A{action_idx}",
+                    action_type=ActionType.SWITCH_LINE,
+                    target_id=int(l_id),
+                    description=f"Switch Line {l_id} ({self.env.name_line[l_id]}): relieve congestion around Bus {self.env.line_or_to_subid[l_id]}-{self.env.line_ex_to_subid[l_id]} (rho: {rhos[l_id]:.2f})."
+                )
+            )
+            action_idx += 1
+            if len(candidates) >= max_candidates:
+                return candidates
+
+        return candidates
+
     def create_grid2op_action(self, proposal: ActionProposal) -> Tuple[BaseAction, bool]:
         """Convert an ActionProposal into a Grid2Op Action. Returns (action, is_valid)."""
         action_space = self.env.action_space
@@ -154,7 +280,8 @@ class Grid2OpAdapter:
         action_taken: ActionProposal,
         reward: float,
         done: bool,
-        done_reason: Optional[str] = None
+        done_reason: Optional[str] = None,
+        fallback_used: bool = False
     ) -> StepObservation:
         rhos = [float(r) for r in obs.rho]
         statuses = [bool(s) for s in obs.line_status]
@@ -170,7 +297,8 @@ class Grid2OpAdapter:
             action_taken=action_taken,
             reward=float(reward),
             done=done,
-            done_reason=done_reason
+            done_reason=done_reason,
+            fallback_used=fallback_used
         )
 
     def close(self):

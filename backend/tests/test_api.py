@@ -9,6 +9,7 @@ def test_api_health():
     assert res.status_code == 200
     data = res.json()
     assert data["status"] == "ok"
+    assert "backend" in data
 
 
 def test_api_environment():
@@ -18,19 +19,32 @@ def test_api_environment():
     assert data["n_sub"] == 14
     assert data["n_line"] == 20
     assert len(data["substations"]) == 14
+    assert "busbar" in data["busbar_modeling_note"].lower()
 
 
-def test_api_scenarios():
+def test_api_scenarios_and_splits():
+    # All scenarios
     res = client.get("/api/scenarios")
     assert res.status_code == 200
     data = res.json()
     assert len(data) >= 3
-    assert any(s["id"] == "case14_normal" for s in data)
+
+    # Development split
+    res_dev = client.get("/api/scenarios?split=dev")
+    assert res_dev.status_code == 200
+    data_dev = res_dev.json()
+    assert all(s["split"] == "dev" for s in data_dev)
+
+    # Held-out split
+    res_held = client.get("/api/scenarios?split=held_out")
+    assert res_held.status_code == 200
+    data_held = res_held.json()
+    assert all(s["split"] == "held_out" for s in data_held)
 
 
-def test_api_run_experiment():
+def test_api_run_experiment_and_replay():
     payload = {
-        "scenario_id": "case14_normal",
+        "scenario_id": "heldout_chronic_0000_normal",
         "controller_type": "noop",
         "max_steps": 3
     }
@@ -39,8 +53,8 @@ def test_api_run_experiment():
     rec = res.json()
     assert "id" in rec
     assert rec["metrics"]["survival_steps"] >= 1
+    assert "provenance" in rec
 
-    # Verify we can fetch replay
     exp_id = rec["id"]
     rep_res = client.get(f"/api/experiments/{exp_id}/replay")
     assert rep_res.status_code == 200

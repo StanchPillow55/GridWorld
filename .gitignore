@@ -22,7 +22,9 @@ frontend/dist/
 frontend/.vite/
 
 # Experiments & Local Data
-experiments/
+experiments/*
+!experiments/fixtures/
+!experiments/fixtures/**
 data/
 *.log
 .DS_Store

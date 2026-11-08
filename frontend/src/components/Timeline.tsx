@@ -7,7 +7,10 @@ import {
   RotateCcw,
   Activity,
   AlertTriangle,
-  Info
+  Info,
+  GitBranch,
+  Target,
+  CheckCircle2
 } from 'lucide-react';
 import { StepObservation } from '../types/grid';
 
@@ -46,6 +49,8 @@ export const Timeline: React.FC<TimelineProps> = ({
   const maxRho = currentStep.max_rho;
   const isOverloaded = maxRho >= 1.0;
   const isCongested = maxRho >= 0.90;
+  const forecast = currentStep.forecast_verification;
+  const proposals = currentStep.proposals_history || [];
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col gap-4">
@@ -109,20 +114,30 @@ export const Timeline: React.FC<TimelineProps> = ({
             </span>
           </div>
 
+          {/* Forecast vs Actual Verification Pill */}
+          {forecast && (
+            <div className="hidden sm:flex items-center gap-1.5 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-[11px]">
+              <Target className="w-3 h-3 text-purple-400" />
+              <span className="text-slate-400">Forecast:</span>
+              <span className="text-purple-300">{(forecast.forecasted_max_rho * 100).toFixed(1)}%</span>
+              <span className="text-slate-500">|</span>
+              <span className="text-slate-400">Err:</span>
+              <span className={forecast.forecast_error > 0.05 ? 'text-amber-400' : 'text-emerald-400'}>
+                {(forecast.forecast_error * 100).toFixed(1)}%
+              </span>
+            </div>
+          )}
+
           <div>
             <span className="text-slate-400">Mean ρ: </span>
             <span className="text-slate-200">{(currentStep.mean_rho * 100).toFixed(1)}%</span>
           </div>
 
-          <div>
-            <span className="text-slate-400">Load: </span>
-            <span className="text-slate-200">{currentStep.total_load_mw.toFixed(1)} MW</span>
-          </div>
-
-          <div>
-            <span className="text-slate-400">Gen: </span>
-            <span className="text-slate-200">{currentStep.total_gen_mw.toFixed(1)} MW</span>
-          </div>
+          {currentStep.fallback_used && (
+            <span className="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-500/30">
+              FALLBACK USED
+            </span>
+          )}
         </div>
       </div>
 
@@ -152,9 +167,9 @@ export const Timeline: React.FC<TimelineProps> = ({
         <div className="flex-1 space-y-1">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-slate-300">
-              Agent Action ({controllerName}):{' '}
+              Executed Action ({controllerName}):{' '}
               <span className="text-blue-400 font-mono uppercase">
-                {currentStep.action_taken.action_type}
+                {currentStep.action_taken.action_id || ''} {currentStep.action_taken.action_type}
                 {currentStep.action_taken.target_id !== null && currentStep.action_taken.target_id !== undefined
                   ? ` [Line ${currentStep.action_taken.target_id}]`
                   : ''}
@@ -162,7 +177,7 @@ export const Timeline: React.FC<TimelineProps> = ({
             </span>
             {currentStep.done && (
               <span className="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px] font-bold border border-red-500/30">
-                TERMINATED: {currentStep.done_reason || 'Outage / Blackout'}
+                TERMINATED: {currentStep.done_reason || 'Grid divergence / blackout'}
               </span>
             )}
           </div>
@@ -171,6 +186,55 @@ export const Timeline: React.FC<TimelineProps> = ({
           </p>
         </div>
       </div>
+
+      {/* Inspectable Proposal & Refinement History (Phase 3 Loop) */}
+      {proposals.length > 0 && (
+        <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 flex flex-col gap-2">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-300">
+            <GitBranch className="w-3.5 h-3.5" />
+            <span>Online Refinement Trace ({proposals.length} proposal rounds evaluated before execution)</span>
+          </div>
+          <div className="space-y-1.5">
+            {proposals.map((pr) => (
+              <div
+                key={pr.round_index}
+                className={`p-2 rounded border text-xs flex items-start justify-between gap-3 ${
+                  pr.selected
+                    ? 'bg-purple-950/40 border-purple-500/50 text-purple-200'
+                    : 'bg-slate-900/60 border-slate-800/80 text-slate-400'
+                }`}
+              >
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono font-bold text-[11px] bg-slate-800 px-1.5 py-0.2 rounded text-slate-300">
+                      Round {pr.round_index}
+                    </span>
+                    <span className="font-bold text-slate-200">{pr.action_id}</span>
+                    <span className="text-[11px] text-slate-400">{pr.rationale}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 italic">
+                    {pr.feedback}
+                  </div>
+                </div>
+
+                <div className="text-right shrink-0 flex flex-col items-end gap-1">
+                  <span className="font-mono text-[11px]">
+                    Simulated ρ:{' '}
+                    <span className={pr.simulated_max_rho >= 1.0 ? 'text-red-400 font-bold' : 'text-emerald-400 font-bold'}>
+                      {(pr.simulated_max_rho * 100).toFixed(1)}%
+                    </span>
+                  </span>
+                  {pr.selected && (
+                    <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/30">
+                      <CheckCircle2 className="w-3 h-3" /> Selected
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

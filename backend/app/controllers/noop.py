@@ -1,16 +1,32 @@
-from typing import Any, List, Optional
+from typing import Any, List, Tuple
 from backend.app.controllers.base import BaseController
-from backend.app.schemas import ActionProposal, ActionType
+from backend.app.schemas import (
+    ActionProposal,
+    ActionType,
+    CandidateAction,
+    ProposalRoundRecord
+)
 
 
 class NoopController(BaseController):
-    """Baseline controller that takes no action (Do-Nothing)."""
+    """
+    Controller 1: Do-Nothing Baseline.
+    Passively monitors grid state without intervention. Zero simulation and zero model calls.
+    """
 
     def __init__(self):
-        super().__init__(name="Do-Nothing Baseline")
+        super().__init__(name="Do-Nothing Baseline", controller_type="noop")
 
-    def act(self, observation: Any, legal_actions: Optional[List[Any]] = None) -> ActionProposal:
-        return ActionProposal(
+    def act(
+        self,
+        observation: Any,
+        candidates: List[CandidateAction],
+        adapter: Any,
+        step_idx: int = 1
+    ) -> Tuple[ActionProposal, List[ProposalRoundRecord]]:
+        proposal = ActionProposal(
+            action_id="A0",
             action_type=ActionType.NOOP,
-            rationale="Passively monitor grid state without intervention."
+            rationale="Passively monitor grid state without intervention (Do-Nothing baseline)."
         )
+        return proposal, []

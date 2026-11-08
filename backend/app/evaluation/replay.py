@@ -4,7 +4,8 @@ from backend.app.schemas import (
     StepObservation,
     ExperimentMetrics,
     GridTopology,
-    ControllerType
+    ControllerType,
+    ProvenanceMetadata
 )
 
 
@@ -12,6 +13,7 @@ def build_replay_data(
     experiment_id: str,
     scenario_id: str,
     controller_type: ControllerType,
+    provenance: ProvenanceMetadata,
     topology: GridTopology,
     metrics: ExperimentMetrics,
     steps: List[StepObservation]
@@ -20,6 +22,7 @@ def build_replay_data(
         experiment_id=experiment_id,
         scenario_id=scenario_id,
         controller_type=controller_type,
+        provenance=provenance,
         topology=topology,
         metrics=metrics,
         steps=steps

@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 from backend.app.simulator.grid2op_adapter import Grid2OpAdapter
 from backend.app.schemas import GridTopology, ActionProposal, ActionType
 
@@ -19,33 +20,31 @@ def test_topology_extraction(adapter):
     assert topo.n_load == 11
     assert len(topo.substations) == 14
     assert len(topo.lines) == 20
-    assert len(topo.generators) == 6
-    assert len(topo.loads) == 11
+    assert "busbar" in topo.busbar_modeling_note.lower()
 
-    # Verify positions exist for React Flow rendering
     for sub in topo.substations:
         assert sub.pos_x > 0
         assert sub.pos_y > 0
 
 
-def test_simulation_step(adapter):
-    env = adapter.env
-    obs = env.reset()
-    action, valid = adapter.create_grid2op_action(ActionProposal(action_type=ActionType.NOOP))
-    assert valid is True
+def test_chronic_determinism(adapter):
+    # Verify that resetting to chronic 3 with fixed seed produces identical initial state
+    obs1 = adapter.reset_chronic(chronic_id=3, seed=42)
+    rho1 = np.copy(obs1.rho)
 
-    next_obs, reward, done, info = env.step(action)
-    step = adapter.observation_to_step(
-        obs=next_obs,
-        step_idx=1,
-        action_taken=ActionProposal(action_type=ActionType.NOOP),
-        reward=reward,
-        done=done
-    )
+    obs2 = adapter.reset_chronic(chronic_id=3, seed=42)
+    rho2 = np.copy(obs2.rho)
 
-    assert step.step == 1
-    assert step.max_rho >= 0.0
-    assert len(step.line_rhos) == 20
-    assert len(step.line_status) == 20
-    assert step.total_load_mw > 0
-    assert step.total_gen_mw > 0
+    np.testing.assert_allclose(rho1, rho2, rtol=1e-5)
+    # Line 17 initializes in severe thermal overload (> 1.0)
+    assert obs1.rho[17] > 1.0
+
+
+def test_provenance_metadata(adapter):
+    adapter.reset_chronic(chronic_id=3, seed=42)
+    provenance = adapter.get_provenance_metadata(max_steps=20, disturbances=[])
+    assert provenance.chronic_id == 3
+    assert provenance.seed == 42
+    assert provenance.grid2op_version is not None
+    assert provenance.backend_class is not None
+    assert provenance.python_version is not None

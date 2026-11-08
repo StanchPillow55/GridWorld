@@ -16,9 +16,10 @@ import { Zap, ShieldCheck, Activity, Terminal, RefreshCw, X } from 'lucide-react
 const App: React.FC = () => {
   const [topology, setTopology] = useState<GridTopology | null>(null);
   const [scenarios, setScenarios] = useState<ScenarioConfig[]>([]);
-  const [selectedScenarioId, setSelectedScenarioId] = useState<string>('case14_corridor_congest');
-  const [selectedController, setSelectedController] = useState<ControllerType>('heuristic');
-  const [maxSteps, setMaxSteps] = useState<number>(30);
+  const [selectedScenarioId, setSelectedScenarioId] = useState<string>('dev_chronic_0003_overload');
+  const [selectedController, setSelectedController] = useState<ControllerType>('refinement_llm');
+  const [maxSteps, setMaxSteps] = useState<number>(20);
+  const [maxRounds, setMaxRounds] = useState<number>(3);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string>('Ready');
 
@@ -70,6 +71,8 @@ const App: React.FC = () => {
           scenario_id: selectedScenarioId,
           controller_type: selectedController,
           max_steps: maxSteps,
+          max_proposals_per_step: maxRounds,
+          forecast_budget: 6
         }),
       });
 
@@ -111,7 +114,7 @@ const App: React.FC = () => {
       setBenchmarkRecords(records);
 
       // Default current view to the heuristic or AI result
-      const topRecord = records.find((r) => r.controller_type === 'heuristic') || records[0];
+      const topRecord = records.find((r) => r.controller_type === 'refinement_llm') || records[0];
       if (topRecord) {
         setCurrentRecord(topRecord);
         const repRes = await fetch(`/api/experiments/${topRecord.id}/replay`);
@@ -249,6 +252,8 @@ const App: React.FC = () => {
             onSelectController={setSelectedController}
             maxSteps={maxSteps}
             onChangeMaxSteps={setMaxSteps}
+            maxRounds={maxRounds}
+            onChangeMaxRounds={setMaxRounds}
             isRunning={isRunning}
             onRunExperiment={handleRunExperiment}
             onRunBenchmark={handleRunBenchmark}
