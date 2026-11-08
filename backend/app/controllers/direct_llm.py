@@ -27,13 +27,13 @@ class DirectLLMController(BaseController):
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model_name: str = "gpt-4o-mini",
+        model_name: Optional[str] = None,
         ollama_url: Optional[str] = None
     ):
         super().__init__(name="Direct LLM Controller (Single-Shot)", controller_type="direct_llm")
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        self.model_name = model_name
         self.ollama_url = ollama_url or os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        self.model_name = model_name or ("gpt-4o-mini" if self.api_key else "llama3.2:latest")
 
     def _call_model(self, prompt: str) -> Optional[dict]:
         t0 = time.perf_counter()
@@ -61,7 +61,7 @@ class DirectLLMController(BaseController):
                     "response_format": {"type": "json_object"},
                     "temperature": 0.1
                 }
-                res = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=10)
+                res = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=25)
                 latency = (time.perf_counter() - t0) * 1000.0
 
                 if res.status_code == 200:
@@ -75,7 +75,6 @@ class DirectLLMController(BaseController):
                     self.resource_usage.completion_tokens += c_tok
                     self.resource_usage.total_tokens += (p_tok + c_tok)
                     self.resource_usage.model_latency_ms += latency
-                    # gpt-4o-mini pricing: $0.15/1M input, $0.60/1M output
                     self.resource_usage.estimated_cost_usd += (p_tok * 0.00000015 + c_tok * 0.00000060)
 
                     content = body["choices"][0]["message"]["content"]
@@ -83,29 +82,40 @@ class DirectLLMController(BaseController):
             except Exception as e:
                 logger.warning(f"OpenAI call failed in DirectLLM: {e}")
 
-        # 2. Try Ollama local
+        # 2. Try Ollama local via /api/chat
         try:
-            res = requests.post(
-                f"{self.ollama_url}/api/generate",
-                json={
-                    "model": "llama3.2",
-                    "prompt": prompt,
-                    "format": "json",
-                    "stream": False
-                },
-                timeout=5
-            )
+            payload = {
+                "model": self.model_name,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are an autonomous electrical grid operator. "
+                            "Select exactly ONE action_id from the candidate actions. "
+                            "Output JSON only: {\"action_id\": \"A...\", \"rationale\": \"...\"}"
+                        )
+                    },
+                    {"role": "user", "content": prompt}
+                ],
+                "format": "json",
+                "stream": False
+            }
+            res = requests.post(f"{self.ollama_url}/api/chat", json=payload, timeout=30)
             latency = (time.perf_counter() - t0) * 1000.0
             if res.status_code == 200:
                 data = res.json()
+                p_tok = data.get("prompt_eval_count", 0)
+                c_tok = data.get("eval_count", 0)
                 self.resource_usage.model_calls += 1
-                self.resource_usage.prompt_tokens += data.get("prompt_eval_count", 0)
-                self.resource_usage.completion_tokens += data.get("eval_count", 0)
-                self.resource_usage.total_tokens += (data.get("prompt_eval_count", 0) + data.get("eval_count", 0))
+                self.resource_usage.prompt_tokens += p_tok
+                self.resource_usage.completion_tokens += c_tok
+                self.resource_usage.total_tokens += (p_tok + c_tok)
                 self.resource_usage.model_latency_ms += latency
-                return json.loads(data.get("response", "{}"))
-        except Exception:
-            pass
+
+                content_str = data.get("message", {}).get("content", "{}")
+                return json.loads(content_str)
+        except Exception as e:
+            logger.debug(f"Ollama call failed in DirectLLM: {e}")
 
         return None
 
@@ -122,7 +132,6 @@ class DirectLLMController(BaseController):
         mean_rho = float(np.mean(observation.rho))
         worst_line = int(np.argmax(observation.rho))
 
-        # Format prompt with candidate catalog
         catalog_desc = "\n".join([f"- {c.action_id}: {c.description}" for c in candidates])
         prompt = (
             f"Step: {step_idx}\n"
@@ -137,19 +146,19 @@ class DirectLLMController(BaseController):
         model_resp = self._call_model(prompt)
 
         if model_resp and "action_id" in model_resp:
-            action_id = str(model_resp.get("action_id", "A0")).strip()
+            action_id = str(model_resp.get("action_id", "A0")).strip().upper()
             rationale = str(model_resp.get("rationale", "Direct LLM decision."))
+            self.fallback_used = False
 
-            # Match chosen action from catalog
             for c in candidates:
-                if c.action_id.lower() == action_id.lower():
+                if c.action_id.upper() == action_id:
                     return ActionProposal(
                         action_id=c.action_id,
                         action_type=c.action_type,
                         target_id=c.target_id,
                         target_bus=c.target_bus,
                         redispatch_val=c.redispatch_val,
-                        rationale=f"[Direct LLM] {rationale}"
+                        rationale=f"[Direct LLM: {self.model_name}] {rationale}"
                     ), []
 
         # Explicit fallback if model is unconfigured / offline

@@ -4,6 +4,7 @@ import pytest
 from backend.app.schemas import ExperimentRunRequest, ControllerType
 from backend.app.evaluation.runner import ExperimentRunner
 from backend.app.persistence.experiments import get_experiment_record, get_experiment_replay
+from backend.app.evaluation.replay import reproduce_trajectory_in_fresh_env
 
 
 def test_replay_persistence_and_determinism():
@@ -25,6 +26,11 @@ def test_replay_persistence_and_determinism():
     assert loaded_replay is not None
     assert loaded_replay.experiment_id == record.id
     assert len(loaded_replay.steps) == len(replay.steps)
+
+    # Verify fresh environment re-execution
+    is_reproducible, max_div = reproduce_trajectory_in_fresh_env(replay)
+    assert is_reproducible is True
+    assert max_div < 1e-4
 
 
 def test_committed_experiment_fixture():

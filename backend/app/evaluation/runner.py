@@ -80,38 +80,39 @@ class ExperimentRunner:
         env = self.adapter.env
 
         for step_idx in range(1, max_steps + 1):
-            # Check for scheduled physical disturbance
+            # 1. Check for scheduled physical disturbance (strictly 1 env.step per step_idx)
             if step_idx in disturbances_by_step:
                 dist = disturbances_by_step[step_idx]
                 if dist.action == "disconnect":
                     try:
                         fault_act = env.action_space({"set_line_status": [(dist.line_id, -1)]})
-                        obs, _, done, _ = env.step(fault_act)
+                        obs, reward, done, info = env.step(fault_act)
                         actions_summary.append(f"Step {step_idx}: Physical disturbance: Line {dist.line_id} forced offline.")
+
+                        step_obs = self.adapter.observation_to_step(
+                            obs=obs,
+                            step_idx=step_idx,
+                            action_taken=ActionProposal(
+                                action_type=ActionType.SWITCH_LINE,
+                                target_id=dist.line_id,
+                                rationale=f"Exogenous physical disturbance: Line {dist.line_id} forced offline."
+                            ),
+                            reward=reward,
+                            done=done,
+                            done_reason="Blackout triggered by external disturbance" if done else None,
+                            fallback_used=False
+                        )
+                        steps.append(step_obs)
                         if done:
-                            steps.append(
-                                self.adapter.observation_to_step(
-                                    obs=obs,
-                                    step_idx=step_idx,
-                                    action_taken=ActionProposal(
-                                        action_type=ActionType.SWITCH_LINE,
-                                        target_id=dist.line_id,
-                                        rationale=f"Forced outage of Line {dist.line_id}"
-                                    ),
-                                    reward=-10.0,
-                                    done=True,
-                                    done_reason="Blackout triggered by external disturbance",
-                                    fallback_used=controller.fallback_used
-                                )
-                            )
                             break
+                        # Disturbance consumed step_idx; controller responds at next timestep
+                        continue
                     except Exception:
                         pass
 
-            # Generate discrete, bounded action candidates
+            # 2. Controller decision cycle
             candidates = self.adapter.get_candidate_actions(obs)
 
-            # Controller selects or refines action
             proposal, proposal_records = controller.act(
                 observation=obs,
                 candidates=candidates,
@@ -119,7 +120,7 @@ class ExperimentRunner:
                 step_idx=step_idx
             )
 
-            # Find forecasted rho for verification
+            # Retrieve forecasted rho from selected proposal round
             forecasted_rho: Optional[float] = None
             for pr in proposal_records:
                 if pr.selected:
@@ -130,10 +131,10 @@ class ExperimentRunner:
             if not is_valid:
                 invalid_actions += 1
 
-            # Step physical environment
+            # Step physical environment exactly once
             obs, reward, done, info = env.step(g2op_action)
 
-            # Measure forecast verification if available
+            # Measure forecast verification if simulation occurred
             forecast_verif = None
             actual_max_rho = float(np.max(obs.rho)) if len(obs.rho) > 0 else 0.0
             if forecasted_rho is not None and forecasted_rho < 900.0:

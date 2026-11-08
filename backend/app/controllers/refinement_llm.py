@@ -31,15 +31,15 @@ class RefinementLLMController(BaseController):
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model_name: str = "gpt-4o-mini",
+        model_name: Optional[str] = None,
         ollama_url: Optional[str] = None,
         max_rounds: int = 3,
         overload_threshold: float = 0.90
     ):
         super().__init__(name="Simulation-Guided Refinement LLM", controller_type="refinement_llm")
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        self.model_name = model_name
         self.ollama_url = ollama_url or os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        self.model_name = model_name or ("gpt-4o-mini" if self.api_key else "llama3.2:latest")
         self.max_rounds = max_rounds
         self.overload_threshold = overload_threshold
 
@@ -59,7 +59,7 @@ class RefinementLLMController(BaseController):
                     "response_format": {"type": "json_object"},
                     "temperature": 0.1
                 }
-                res = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=10)
+                res = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=25)
                 latency = (time.perf_counter() - t0) * 1000.0
 
                 if res.status_code == 200:
@@ -80,30 +80,30 @@ class RefinementLLMController(BaseController):
             except Exception as e:
                 logger.warning(f"OpenAI call failed in RefinementLLM: {e}")
 
-        # 2. Try Ollama local
+        # 2. Try Ollama local via /api/chat
         try:
-            prompt_str = "\n".join([f"{m['role'].upper()}: {m['content']}" for m in messages])
-            res = requests.post(
-                f"{self.ollama_url}/api/generate",
-                json={
-                    "model": "llama3.2",
-                    "prompt": prompt_str,
-                    "format": "json",
-                    "stream": False
-                },
-                timeout=5
-            )
+            payload = {
+                "model": self.model_name,
+                "messages": messages,
+                "format": "json",
+                "stream": False
+            }
+            res = requests.post(f"{self.ollama_url}/api/chat", json=payload, timeout=30)
             latency = (time.perf_counter() - t0) * 1000.0
             if res.status_code == 200:
                 data = res.json()
+                p_tok = data.get("prompt_eval_count", 0)
+                c_tok = data.get("eval_count", 0)
                 self.resource_usage.model_calls += 1
-                self.resource_usage.prompt_tokens += data.get("prompt_eval_count", 0)
-                self.resource_usage.completion_tokens += data.get("eval_count", 0)
-                self.resource_usage.total_tokens += (data.get("prompt_eval_count", 0) + data.get("eval_count", 0))
+                self.resource_usage.prompt_tokens += p_tok
+                self.resource_usage.completion_tokens += c_tok
+                self.resource_usage.total_tokens += (p_tok + c_tok)
                 self.resource_usage.model_latency_ms += latency
-                return json.loads(data.get("response", "{}"))
-        except Exception:
-            pass
+
+                content_str = data.get("message", {}).get("content", "{}")
+                return json.loads(content_str)
+        except Exception as e:
+            logger.debug(f"Ollama call failed in RefinementLLM: {e}")
 
         return None
 
@@ -132,7 +132,7 @@ class RefinementLLMController(BaseController):
             {
                 "role": "user",
                 "content": (
-                    f"Step {step_idx}: Current telemetry: Peak line rho = {current_max_rho:.3f} (Line #{worst_line}), "
+                    f"Step {step_idx}: Current telemetry: Peak line rho = {current_max_rho:.3f} (Worst line: #{worst_line}), "
                     f"Mean rho = {mean_rho:.3f}.\n"
                     f"Candidate Actions:\n{catalog_desc}\n\n"
                     "Propose your initial action_id."
@@ -148,8 +148,8 @@ class RefinementLLMController(BaseController):
         # Attempt online refinement loop up to max_rounds
         for round_num in range(1, self.max_rounds + 1):
             model_resp = self._call_model(messages)
-            
-            # If model is unavailable, run structured simulation-guided revision
+
+            # If model is unavailable, run structured offline refinement fallback
             if not model_resp or "action_id" not in model_resp:
                 self.fallback_used = True
                 return self._offline_refinement_policy(
@@ -159,6 +159,7 @@ class RefinementLLMController(BaseController):
                     step_idx=step_idx
                 )
 
+            self.fallback_used = False
             proposed_id = str(model_resp.get("action_id", "A0")).strip().upper()
             rationale = str(model_resp.get("rationale", "Proposed by LLM."))
 
@@ -245,7 +246,7 @@ class RefinementLLMController(BaseController):
             target_id=best_candidate.target_id,
             target_bus=best_candidate.target_bus,
             redispatch_val=best_candidate.redispatch_val,
-            rationale=f"[Refinement LLM] Selected {best_candidate.action_id} after {len(round_records)} refinement rounds (forecast peak rho: {best_sim_rho:.3f})."
+            rationale=f"[Refinement LLM: {self.model_name}] Selected {best_candidate.action_id} after {len(round_records)} refinement rounds (forecast peak rho: {best_sim_rho:.3f})."
         )
         return chosen_proposal, round_records
 
@@ -265,19 +266,14 @@ class RefinementLLMController(BaseController):
         best_candidate = candidates[0]
         best_sim_rho = current_max_rho
 
-        # Construct a sensible sequence of candidate actions across refinement rounds:
-        # If congested, test across both origin and extremity substation lines
         test_queue = []
         if current_max_rho >= self.overload_threshold:
-            # First candidate: try a line on one end of the corridor
             if len(candidates) > 1:
                 test_queue.append(candidates[1])
-            # Second candidate: try a line on the other end of the corridor (e.g. index 4: Line 7)
             if len(candidates) > 4:
                 test_queue.append(candidates[4])
             elif len(candidates) > 2:
                 test_queue.append(candidates[2])
-            # Third candidate: try next candidate
             if len(candidates) > 2 and candidates[2] not in test_queue:
                 test_queue.append(candidates[2])
             elif len(candidates) > 3 and candidates[3] not in test_queue:
